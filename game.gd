@@ -77,8 +77,6 @@ func get_wall_tile_atlas(floor_cells: Dictionary, wall_cell: Vector2i) -> Vector
 			return TILE_WALL_NON_CORNER_VERTICAL_ATLAS
 		if has_up:
 			return TILE_WALL_NON_CORNER_LEFT_ATLAS
-		if has_down:
-			return TILE_WALL_NON_CORNER_ATLAS
 		return TILE_WALL_NON_CORNER_ATLAS
 	if has_left and has_right:
 		return TILE_WALL_NON_CORNER_ATLAS
