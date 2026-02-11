@@ -7,7 +7,7 @@ var world_size = Vector2i(60,30)
 var tilemap: TileMap
 var paths: Array = []
 
-const TILE_SOURCE_ID := 2
+const DUNGEON_TILESET_SOURCE_ID := 2
 const TILE_FLOOR_ATLAS := Vector2i(2, 2)
 const TILE_WALL_STRAIGHT_ATLAS := Vector2i(0, 0)
 const TILE_WALL_CORNER_LEFT_UP_ATLAS := Vector2i(0, 1)
@@ -35,7 +35,7 @@ func _draw():
 				var cell = Vector2i(path['left'].x,path['left'].y+i)
 				floor_cells[cell] = true
 	for cell in floor_cells.keys():
-		tilemap.set_cell(0, cell, TILE_SOURCE_ID, TILE_FLOOR_ATLAS)
+		tilemap.set_cell(0, cell, DUNGEON_TILESET_SOURCE_ID, TILE_FLOOR_ATLAS)
 	var wall_cells: Dictionary = {}
 	for cell in floor_cells.keys():
 		for offset in [Vector2i(0, -1), Vector2i(0, 1), Vector2i(-1, 0), Vector2i(1, 0)]:
@@ -44,7 +44,7 @@ func _draw():
 				wall_cells[neighbor] = true
 	for wall_cell in wall_cells.keys():
 		var wall_tile = get_wall_tile_atlas(floor_cells, wall_cell)
-		tilemap.set_cell(0, wall_cell, TILE_SOURCE_ID, wall_tile)
+		tilemap.set_cell(0, wall_cell, DUNGEON_TILESET_SOURCE_ID, wall_tile)
 func _ready():
 	tilemap = get_node("TileMap")
 	root_node  = Branch.new(Vector2i(0,0), world_size)
@@ -61,6 +61,8 @@ func get_wall_tile_atlas(floor_cells: Dictionary, wall_cell: Vector2i) -> Vector
 	var has_right = floor_cells.has(wall_cell + Vector2i(1, 0))
 	var has_up = floor_cells.has(wall_cell + Vector2i(0, -1))
 	var has_down = floor_cells.has(wall_cell + Vector2i(0, 1))
+	if (has_left and has_right) or (has_up and has_down):
+		return TILE_WALL_STRAIGHT_ATLAS
 	if has_right and has_down:
 		return TILE_WALL_CORNER_LEFT_UP_ATLAS
 	if has_right and has_up:
