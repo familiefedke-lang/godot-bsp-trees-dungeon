@@ -10,10 +10,11 @@ var paths: Array = []
 const DUNGEON_TILESET_SOURCE_ID := 2
 const TILE_FLOOR_ATLAS := Vector2i(2, 2)
 const TILE_WALL_NON_CORNER_ATLAS := Vector2i(0, 0)
-const TILE_WALL_CORNER_LEFT_UP_ATLAS := Vector2i(0, 1)
-const TILE_WALL_CORNER_LEFT_DOWN_ATLAS := Vector2i(1, 1)
-const TILE_WALL_CORNER_RIGHT_UP_ATLAS := Vector2i(1, 0)
-const TILE_WALL_CORNER_RIGHT_DOWN_ATLAS := Vector2i(2, 0)
+const TILE_WALL_CORNER_FLOOR_RIGHT_DOWN_ATLAS := Vector2i(0, 1)
+const TILE_WALL_CORNER_FLOOR_RIGHT_UP_ATLAS := Vector2i(1, 1)
+const TILE_WALL_CORNER_FLOOR_LEFT_DOWN_ATLAS := Vector2i(1, 0)
+const TILE_WALL_CORNER_FLOOR_LEFT_UP_ATLAS := Vector2i(2, 0)
+const CARDINAL_OFFSETS := [Vector2i(0, -1), Vector2i(0, 1), Vector2i(-1, 0), Vector2i(1, 0)]
 
 func _draw():
 	var rng = RandomNumberGenerator.new()
@@ -38,7 +39,7 @@ func _draw():
 		tilemap.set_cell(0, cell, DUNGEON_TILESET_SOURCE_ID, TILE_FLOOR_ATLAS)
 	var wall_cells: Dictionary = {}
 	for cell in floor_cells_set.keys():
-		for offset in [Vector2i(0, -1), Vector2i(0, 1), Vector2i(-1, 0), Vector2i(1, 0)]:
+		for offset in CARDINAL_OFFSETS:
 			var neighbor = cell + offset
 			if not floor_cells_set.has(neighbor):
 				wall_cells[neighbor] = true
@@ -61,17 +62,17 @@ func get_wall_tile_atlas(floor_cells_set: Dictionary, wall_cell: Vector2i) -> Ve
 	var has_right = floor_cells_set.has(wall_cell + Vector2i(1, 0))
 	var has_up = floor_cells_set.has(wall_cell + Vector2i(0, -1))
 	var has_down = floor_cells_set.has(wall_cell + Vector2i(0, 1))
-	var neighbor_count = int(has_left) + int(has_right) + int(has_up) + int(has_down)
-	if neighbor_count != 2:
+	var adjacent_floor_count = int(has_left) + int(has_right) + int(has_up) + int(has_down)
+	if adjacent_floor_count != 2:
 		return TILE_WALL_NON_CORNER_ATLAS
 	if (has_left and has_right) or (has_up and has_down):
 		return TILE_WALL_NON_CORNER_ATLAS
 	if has_right and has_down:
-		return TILE_WALL_CORNER_LEFT_UP_ATLAS
+		return TILE_WALL_CORNER_FLOOR_RIGHT_DOWN_ATLAS
 	if has_right and has_up:
-		return TILE_WALL_CORNER_LEFT_DOWN_ATLAS
+		return TILE_WALL_CORNER_FLOOR_RIGHT_UP_ATLAS
 	if has_left and has_down:
-		return TILE_WALL_CORNER_RIGHT_UP_ATLAS
+		return TILE_WALL_CORNER_FLOOR_LEFT_DOWN_ATLAS
 	if has_left and has_up:
-		return TILE_WALL_CORNER_RIGHT_DOWN_ATLAS
+		return TILE_WALL_CORNER_FLOOR_LEFT_UP_ATLAS
 	return TILE_WALL_NON_CORNER_ATLAS
