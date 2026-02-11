@@ -71,13 +71,16 @@ func get_wall_tile_atlas(floor_cells: Dictionary, wall_cell: Vector2i) -> Vector
 	var has_down = floor_cells.has(wall_cell + OFFSET_DOWN)
 	var adjacent_floor_count = int(has_left) + int(has_right) + int(has_up) + int(has_down)
 	if adjacent_floor_count != 2:
+		var non_corner_tile = TILE_WALL_NON_CORNER_ATLAS
 		if has_left:
-			return TILE_WALL_NON_CORNER_VERTICAL_LEFT_ATLAS
-		if has_right:
-			return TILE_WALL_NON_CORNER_VERTICAL_ATLAS
-		if has_up:
-			return TILE_WALL_NON_CORNER_LEFT_ATLAS
-		return TILE_WALL_NON_CORNER_ATLAS
+			non_corner_tile = TILE_WALL_NON_CORNER_VERTICAL_LEFT_ATLAS
+		elif has_right:
+			non_corner_tile = TILE_WALL_NON_CORNER_VERTICAL_ATLAS
+		elif has_up:
+			non_corner_tile = TILE_WALL_NON_CORNER_LEFT_ATLAS
+		elif has_down:
+			non_corner_tile = TILE_WALL_NON_CORNER_ATLAS
+		return non_corner_tile
 	if has_left and has_right:
 		return TILE_WALL_NON_CORNER_ATLAS
 	if has_up and has_down:
