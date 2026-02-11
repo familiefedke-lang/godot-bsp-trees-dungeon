@@ -7,7 +7,7 @@ var world_size = Vector2i(60,30)
 var tilemap: TileMap
 var paths: Array = []
 
-const DUNGEON_TILESET_SOURCE_ID := 2
+@export var dungeon_tileset_source_id: int = 2
 const TILE_FLOOR_ATLAS := Vector2i(2, 2)
 const TILE_WALL_NON_CORNER_ATLAS := Vector2i(0, 0)
 const TILE_WALL_CORNER_FLOOR_RIGHT_DOWN_ATLAS := Vector2i(0, 1)
@@ -36,7 +36,7 @@ func _draw():
 				var cell = Vector2i(path['left'].x,path['left'].y+i)
 				floor_cells_set[cell] = true
 	for cell in floor_cells_set.keys():
-		tilemap.set_cell(0, cell, DUNGEON_TILESET_SOURCE_ID, TILE_FLOOR_ATLAS)
+		tilemap.set_cell(0, cell, dungeon_tileset_source_id, TILE_FLOOR_ATLAS)
 	var wall_cells: Dictionary = {}
 	for cell in floor_cells_set.keys():
 		for offset in CARDINAL_OFFSETS:
@@ -45,7 +45,7 @@ func _draw():
 				wall_cells[neighbor] = true
 	for wall_cell in wall_cells.keys():
 		var wall_tile = get_wall_tile_atlas(floor_cells_set, wall_cell)
-		tilemap.set_cell(0, wall_cell, DUNGEON_TILESET_SOURCE_ID, wall_tile)
+		tilemap.set_cell(0, wall_cell, dungeon_tileset_source_id, wall_tile)
 func _ready():
 	tilemap = get_node("TileMap")
 	root_node  = Branch.new(Vector2i(0,0), world_size)
