@@ -61,6 +61,9 @@ func get_wall_tile_atlas(floor_cells: Dictionary, wall_cell: Vector2i) -> Vector
 	var has_right = floor_cells.has(wall_cell + Vector2i(1, 0))
 	var has_up = floor_cells.has(wall_cell + Vector2i(0, -1))
 	var has_down = floor_cells.has(wall_cell + Vector2i(0, 1))
+	var neighbor_count = int(has_left) + int(has_right) + int(has_up) + int(has_down)
+	if neighbor_count != 2:
+		return TILE_WALL_STRAIGHT_ATLAS
 	if (has_left and has_right) or (has_up and has_down):
 		return TILE_WALL_STRAIGHT_ATLAS
 	if has_right and has_down:
