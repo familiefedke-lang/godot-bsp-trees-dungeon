@@ -9,9 +9,9 @@ var paths: Array = []
 
 @export var tileset_source_id: int = 2
 const TILE_FLOOR_ATLAS := Vector2i(2, 2)
-const TILE_WALL_NON_CORNER_ATLAS := Vector2i(0, 0)
-const TILE_WALL_NON_CORNER_LEFT_ATLAS := Vector2i(3, 0)
-const TILE_WALL_NON_CORNER_VERTICAL_ATLAS := Vector2i(0, 2)
+const TILE_WALL_NON_CORNER_HORIZONTAL_RIGHT_ATLAS := Vector2i(0, 0)
+const TILE_WALL_NON_CORNER_HORIZONTAL_LEFT_ATLAS := Vector2i(3, 0)
+const TILE_WALL_NON_CORNER_VERTICAL_RIGHT_ATLAS := Vector2i(0, 2)
 const TILE_WALL_NON_CORNER_VERTICAL_LEFT_ATLAS := Vector2i(3, 2)
 const TILE_WALL_CORNER_FLOOR_RIGHT_DOWN_ATLAS := Vector2i(0, 1)
 const TILE_WALL_CORNER_FLOOR_RIGHT_UP_ATLAS := Vector2i(1, 1)
@@ -71,20 +71,20 @@ func get_wall_tile_atlas(floor_cells: Dictionary, wall_cell: Vector2i) -> Vector
 	var has_down = floor_cells.has(wall_cell + OFFSET_DOWN)
 	var adjacent_floor_count = int(has_left) + int(has_right) + int(has_up) + int(has_down)
 	if adjacent_floor_count != 2:
-		var non_corner_tile = TILE_WALL_NON_CORNER_ATLAS
+		var non_corner_tile = TILE_WALL_NON_CORNER_HORIZONTAL_RIGHT_ATLAS
 		if has_left:
 			non_corner_tile = TILE_WALL_NON_CORNER_VERTICAL_LEFT_ATLAS
 		elif has_right:
-			non_corner_tile = TILE_WALL_NON_CORNER_VERTICAL_ATLAS
+			non_corner_tile = TILE_WALL_NON_CORNER_VERTICAL_RIGHT_ATLAS
 		elif has_up:
-			non_corner_tile = TILE_WALL_NON_CORNER_LEFT_ATLAS
+			non_corner_tile = TILE_WALL_NON_CORNER_HORIZONTAL_LEFT_ATLAS
 		elif has_down:
-			non_corner_tile = TILE_WALL_NON_CORNER_ATLAS
+			non_corner_tile = TILE_WALL_NON_CORNER_HORIZONTAL_RIGHT_ATLAS
 		return non_corner_tile
 	if has_left and has_right:
-		return TILE_WALL_NON_CORNER_ATLAS
+		return TILE_WALL_NON_CORNER_HORIZONTAL_RIGHT_ATLAS
 	if has_up and has_down:
-		return TILE_WALL_NON_CORNER_VERTICAL_ATLAS
+		return TILE_WALL_NON_CORNER_VERTICAL_RIGHT_ATLAS
 	if has_right and has_down:
 		return TILE_WALL_CORNER_FLOOR_RIGHT_DOWN_ATLAS
 	if has_right and has_up:
@@ -93,4 +93,4 @@ func get_wall_tile_atlas(floor_cells: Dictionary, wall_cell: Vector2i) -> Vector
 		return TILE_WALL_CORNER_FLOOR_LEFT_DOWN_ATLAS
 	if has_left and has_up:
 		return TILE_WALL_CORNER_FLOOR_LEFT_UP_ATLAS
-	return TILE_WALL_NON_CORNER_ATLAS
+	return TILE_WALL_NON_CORNER_HORIZONTAL_RIGHT_ATLAS
